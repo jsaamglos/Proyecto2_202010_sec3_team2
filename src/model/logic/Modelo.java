@@ -1,7 +1,14 @@
 package model.logic;
 
-import model.data_structures.ArregloDinamico;
-import model.data_structures.IArregloDinamico;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+
+import com.google.gson.Gson;
+
+import model.data_structures.ListaEncadenada;
+import model.data_structures.Node;
 
 /**
  * Definicion del modelo del mundo
@@ -11,62 +18,77 @@ public class Modelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private IArregloDinamico datos;
-	
+
+	private ListaEncadenada<String, Multa> lista;
+
+	private PrimeraClase prClase;
+	private final static String path2 = "./data/Comparendos_DEI_2018_Bogotá_D.C_small.geojson";
+	private final static String path = "./data/Comparendos_DEI_2018_Bogotá_D.C.geojson";
+
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
-	public Modelo()
-	{
-		datos = new ArregloDinamico(7);
+	public Modelo() {
+		Gson gson = new Gson();
+		lista = new ListaEncadenada<String, Multa>();
+		try {
+			FileInputStream inputStream = new FileInputStream(path);
+			InputStreamReader ISReader = new InputStreamReader(inputStream);
+			BufferedReader bf = new BufferedReader(ISReader);
+			PrimeraClase pc = gson.fromJson(bf, PrimeraClase.class);
+			prClase = pc;
+			System.out.println(pc);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
 	}
-	
+
 	/**
-	 * Constructor del modelo del mundo con capacidad dada
-	 * @param tamano
+	 * Se crea la lista con base en los datos cargados
 	 */
-	public Modelo(int capacidad)
-	{
-		datos = new ArregloDinamico(capacidad);
+
+	public void crearLista() {
+		Multa[] multas = prClase.getFeatures();
+		for (Multa multa : multas) {
+			agregar(multa.getProperties().getFecha(), multa);
+		}
 	}
-	
+
 	/**
-	 * Servicio de consulta de numero de elementos presentes en el modelo 
+	 * Servicio de consulta de numero de elementos presentes en el modelo
+	 * 
 	 * @return numero de elementos presentes en el modelo
 	 */
-	public int darTamano()
-	{
-		return datos.darTamano();
+	public int darTamanoLista() {
+		return lista.darTamano();
 	}
 
 	/**
 	 * Requerimiento de agregar dato
+	 * 
 	 * @param dato
 	 */
-	public void agregar(String dato)
-	{	
-		datos.agregar(dato);
-	}
-	
-	/**
-	 * Requerimiento buscar dato
-	 * @param dato Dato a buscar
-	 * @return dato encontrado
-	 */
-	public String buscar(String dato)
-	{
-		return datos.buscar(dato);
-	}
-	
-	/**
-	 * Requerimiento eliminar dato
-	 * @param dato Dato a eliminar
-	 * @return dato eliminado
-	 */
-	public String eliminar(String dato)
-	{
-		return datos.eliminar(dato);
+
+	public void agregar(String llave, Multa dato) {
+
+		lista.agregarElemento(llave, dato);
 	}
 
+	/**
+	 * Requerimiento eliminar dato
+	 * 
+	 * @param dato
+	 *            Dato a eliminar
+	 * @return dato eliminado
+	 */
+
+	public void eliminar(Multa dato) {
+		lista.eliminarElemento(dato);
+	}
+
+	public Multa getMultaMayorOBID() {
+		return lista.darUltimoElemento();
+	}
 
 }
