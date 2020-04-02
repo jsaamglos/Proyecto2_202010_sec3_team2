@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public class ListaEncadenada<K, T> implements IListaEncadenada<K,T> {
+public class ListaEncadenada<K, T> implements IListaEncadenada<K, T> {
 	// apuntador a primer elemento
 	private Node<K, T> primerElemento;
 
@@ -62,10 +62,13 @@ public class ListaEncadenada<K, T> implements IListaEncadenada<K,T> {
 
 		// se encontro el nodo?
 		if (nodo != null) {
-			// borra el nodo de la existencia
-			nodo.getAnterior().setSiguiente(nodo.getSiguiente());
-			nodo.getSiguiente().setAnterior(nodo.getAnterior());
-
+			if (nodo != primerElemento) {
+				// borra el nodo de la existencia
+				nodo.getAnterior().setSiguiente(nodo.getSiguiente());
+				nodo.getSiguiente().setAnterior(nodo.getAnterior());
+			} else {
+				primerElemento = primerElemento.getSiguiente();
+			}
 			// baja en uno el tamano
 			tamano--;
 

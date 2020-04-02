@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import model.data_structures.ListaEncadenada;
 import model.data_structures.Node;
+import model.data_structures.TablaOrdenada;
 
 /**
  * Definicion del modelo del mundo
@@ -19,7 +20,7 @@ public class Modelo {
 	 * Atributos del modelo del mundo
 	 */
 
-	private ListaEncadenada<String, Multa> lista;
+	private TablaOrdenada<String, Multa> tabla;
 
 	private PrimeraClase prClase;
 	private final static String path2 = "./data/Comparendos_DEI_2018_Bogotá_D.C_small.geojson";
@@ -30,7 +31,7 @@ public class Modelo {
 	 */
 	public Modelo() {
 		Gson gson = new Gson();
-		lista = new ListaEncadenada<String, Multa>();
+		tabla = new TablaOrdenada<String, Multa>();
 		try {
 			FileInputStream inputStream = new FileInputStream(path);
 			InputStreamReader ISReader = new InputStreamReader(inputStream);
@@ -60,8 +61,8 @@ public class Modelo {
 	 * 
 	 * @return numero de elementos presentes en el modelo
 	 */
-	public int darTamanoLista() {
-		return lista.darTamano();
+	public int darTamanoTabla() {
+		return tabla.size();
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class Modelo {
 
 	public void agregar(String llave, Multa dato) {
 
-		lista.agregarElemento(llave, dato);
+		tabla.agregarDato(llave, dato);
 	}
 
 	/**
@@ -83,12 +84,12 @@ public class Modelo {
 	 * @return dato eliminado
 	 */
 
-	public void eliminar(Multa dato) {
-		lista.eliminarElemento(dato);
+	public void eliminar(String llave) {
+		tabla.eliminarDato(llave);
 	}
 
-	public Multa getMultaMayorOBID() {
-		return lista.darUltimoElemento();
+	public String getMultaMayorOBID() {
+		return "N";
 	}
 
 }

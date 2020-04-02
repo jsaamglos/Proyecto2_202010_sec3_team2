@@ -1,3 +1,2 @@
-Juan Sebastián Arévalo Moreno
-6to Semestre
-201728738
+Juan Sebastian Arevalo Moreno - 201728738
+Daniel Barreto - 201822639

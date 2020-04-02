@@ -49,6 +49,10 @@ public class Node<K, T> implements INode<K, T> {
 
 	}
 
+	public void setElemento(T dato) {
+		elemento = dato;
+	}
+
 	// asigna el nodo por parametro al anterior
 	@Override
 	public void setAnterior(Node<K, T> nodo) {
