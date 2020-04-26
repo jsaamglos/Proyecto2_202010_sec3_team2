@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 import com.google.gson.Gson;
 
-import model.data_structures.ListaEncadenada;
-import model.data_structures.Node;
-import model.data_structures.TablaOrdenada;
+import model.data_structures.ArbolRojoNegro;
+import model.data_structures.HeapMax;
 
 /**
  * Definicion del modelo del mundo
@@ -20,9 +20,11 @@ public class Modelo {
 	 * Atributos del modelo del mundo
 	 */
 
-	private TablaOrdenada<String, Multa> tabla;
-
+	private ArbolRojoNegro<Date, Multa> arbol = new ArbolRojoNegro<Date, Multa>();
+	private HeapMax<Multa> heap = new HeapMax<Multa>();
+	private int mayorOBID;
 	private PrimeraClase prClase;
+	private final static String path3 = "./data/Comparendos_DEI_2018_Bogotá_D.C_small_50000_sorted.geojson";
 	private final static String path2 = "./data/Comparendos_DEI_2018_Bogotá_D.C_small.geojson";
 	private final static String path = "./data/Comparendos_DEI_2018_Bogotá_D.C.geojson";
 
@@ -31,7 +33,6 @@ public class Modelo {
 	 */
 	public Modelo() {
 		Gson gson = new Gson();
-		tabla = new TablaOrdenada<String, Multa>();
 		try {
 			FileInputStream inputStream = new FileInputStream(path);
 			InputStreamReader ISReader = new InputStreamReader(inputStream);
@@ -49,11 +50,32 @@ public class Modelo {
 	 * Se crea la lista con base en los datos cargados
 	 */
 
-	public void crearLista() {
+	public void crearArbol() {
+		Multa[] multas = prClase.getFeatures();
+		mayorOBID = 0;
+		if (arbol != null) {
+			System.out.println("Tamaño multas en Archivo" + multas.length);
+			for (Multa multa : multas) {
+				arbol.agregarDato(multa.getProperties().getFecha(), multa);
+
+				if (mayorOBID < multa.getProperties().getId()) {
+					mayorOBID = multa.getProperties().getId();
+				}
+			}
+		} else {
+			System.out.println("No se ha inicializado.");
+		}
+	}
+
+	public void crearHeapMax() {
 		Multa[] multas = prClase.getFeatures();
 		for (Multa multa : multas) {
-			agregar(multa.getProperties().getFecha(), multa);
+			heap.agregar(multa);
 		}
+	}
+
+	public int darTamanoHeap() {
+		return heap.getSize();
 	}
 
 	/**
@@ -61,8 +83,8 @@ public class Modelo {
 	 * 
 	 * @return numero de elementos presentes en el modelo
 	 */
-	public int darTamanoTabla() {
-		return tabla.size();
+	public int darTamanoArbol() {
+		return arbol.getSize();
 	}
 
 	/**
@@ -71,25 +93,53 @@ public class Modelo {
 	 * @param dato
 	 */
 
-	public void agregar(String llave, Multa dato) {
+	public void agregar(Date llave, Multa dato) {
 
-		tabla.agregarDato(llave, dato);
+		arbol.agregarDato(llave, dato);
 	}
 
-	/**
-	 * Requerimiento eliminar dato
-	 * 
-	 * @param dato
-	 *            Dato a eliminar
-	 * @return dato eliminado
-	 */
+	public int darMayorObjectID() {
 
-	public void eliminar(String llave) {
-		tabla.eliminarDato(llave);
+		return heap.getMax().getProperties().getId();
+
 	}
 
-	public String getMultaMayorOBID() {
-		return "N";
+	// Requerimiento 1A
+
+	public String comparendosMayorGravedad(int m) {
+		String resp = "\n";
+		HeapMax<Multa> aux = new HeapMax<Multa>();
+		HeapMax<Multa> nueva = new HeapMax<Multa>();
+		HeapMax<Multa> vieja = new HeapMax<Multa>();
+		int size = heap.getSize();
+		for (int i = 0; i < size; i++) {
+			Multa max = heap.getMax();
+			nueva.agregar(max);
+			vieja.agregar(max);
+		}
+		heap = vieja;
+		int sizeNueva = nueva.getSize();
+		while (sizeNueva > 0) {
+			Multa actual = nueva.removeMax();
+			if (actual != null) {
+				actual.cambiarComparacion(2);
+			}
+			aux.agregar(actual);
+			sizeNueva--;
+		}
+
+		for (int i = 0; i <= m; i++) {
+			resp += aux.removeMax().getProperties().toString() + "\n";
+		}
+		return resp;
 	}
 
+	public String textoMultas(Multa[] x) {
+		String resp = "\n";
+		for (int i = 0; i < x.length; i++) {
+			resp += x[i].getProperties().toString() + "\n";
+		}
+		return resp;
+
+	}
 }

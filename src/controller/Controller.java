@@ -3,6 +3,7 @@ package controller;
 import java.util.Scanner;
 
 import model.logic.Modelo;
+import model.logic.Multa;
 import view.View;
 
 public class Controller {
@@ -12,6 +13,8 @@ public class Controller {
 
 	/* Instancia de la Vista */
 	private View view;
+
+	private int cantDatos = 0;
 
 	/**
 	 * Crear la vista y el modelo del proyecto
@@ -38,10 +41,17 @@ public class Controller {
 			switch (option) {
 			case 1:
 				view.printMessage("--------- \nCargar Datos \nDar cantidad de datos cargados: ");
-				modelo.crearLista();
-				respuesta = modelo.getMultaMayorOBID().getProperties().toString();
-				view.printMessage("Se cargaron los Comparendos en total son:" + modelo.darTamanoLista()
+				modelo.crearHeapMax();
+				respuesta = "" + modelo.darMayorObjectID();
+				view.printMessage("Se cargaron los Comparendos en total son:" + modelo.darTamanoHeap()
 						+ "\nEl objeto con mayor ObjectID es:" + respuesta);
+				break;
+			case 2:
+				view.printMessage("--------- \nRequerimiento 1A: ");
+				view.printMessage("--------- \nIngrese la cantidad de comparendos que quiere ver: ");
+				dato = lector.next();
+				respuesta = modelo.comparendosMayorGravedad(Integer.parseInt(dato));
+				view.printMessage("Los comparendos con mayor gravedad son:" + respuesta);
 				break;
 
 			case 0:

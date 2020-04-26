@@ -1,61 +1,57 @@
 package model.data_structures;
 
-public class Node<K, T> implements INode<K, T> {
-	// apuntador al siguiente elemento
-	private Node<K, T> siguienteElemento;
+public class Node<T>
+{
+	
+	private T dato;
 
-	// apuntador al elemento anterior
-	private Node<K, T> anteriorElamento;
+	/**
+	 * Atributo que representa el siguiente nodo. 
+	 */
+	private Node<T> siguiente;
 
-	// elemento
-	private T elemento;
+	//----------------------------------------------------------------
+	//Constructor ----------------------------------------------------
+	//----------------------------------------------------------------
 
-	private K llave;
-
-	// constructor
-	public Node(K llave, T elemento, Node<K, T> anterior) {
-		this.elemento = elemento;
-		this.llave = llave;
-		anteriorElamento = anterior;
-		if (anterior != null) {
-			anterior.setSiguiente(this);
-		}
+	/**
+	 *  Constructor de la clase Nodo. 
+	 *  @param pdato dato con el cual se va inicializar el nodo.
+	 */
+	public Node(T pDato)
+	{
+		dato = pDato;
+		siguiente = null;
 	}
 
-	// da el elemento siguiente
-	public Node<K, T> getSiguiente() {
-		return siguienteElemento;
+	//----------------------------------------------------------------
+	//Metodos --------------------------------------------------------
+	//----------------------------------------------------------------
+
+	/**
+	 * Retornar el elemento que esta en el nodo.
+	 * @return el dato.
+	 */
+	public T darElemento()
+	{
+		return dato;
 	}
 
-	// da el elemento anterior
-	public Node<K, T> getAnterior() {
-		return anteriorElamento;
+	/**
+	 * Retornar el siguiente nodo.
+	 * @return Siguinete nodo.
+	 */
+	public Node<T> darSiguiente()
+	{
+		return siguiente;
 	}
 
-	// returna el elemento
-	public T getElemento() {
-		return elemento;
-	}
-
-	public K getLlave() {
-		//
-		return llave;
-	}
-
-	// asigna el nodo por parametro al siguiete
-	@Override
-	public void setSiguiente(Node<K, T> nodo) {
-		siguienteElemento = nodo;
-
-	}
-
-	public void setElemento(T dato) {
-		elemento = dato;
-	}
-
-	// asigna el nodo por parametro al anterior
-	@Override
-	public void setAnterior(Node<K, T> nodo) {
-		anteriorElamento = nodo;
+	/**
+	 * Asigna al nodo actual un nodo siguiente que entra por parametro. 
+	 * @param pNodo el nodo a asignar como siguiente.
+	 */
+	public void asignarSiguiente(Node<T> pNodo)
+	{
+		siguiente = pNodo;
 	}
 }

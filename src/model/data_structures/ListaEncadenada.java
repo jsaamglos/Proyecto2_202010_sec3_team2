@@ -2,10 +2,10 @@ package model.data_structures;
 
 public class ListaEncadenada<K, T> implements IListaEncadenada<K, T> {
 	// apuntador a primer elemento
-	private Node<K, T> primerElemento;
+	private NodeTabla<K, T> primerElemento;
 
 	// apuntador a ultimo elemento
-	private Node<K, T> ultimoElemento;
+	private NodeTabla<K, T> ultimoElemento;
 
 	// tamano de la lista
 	private int tamano;
@@ -19,13 +19,13 @@ public class ListaEncadenada<K, T> implements IListaEncadenada<K, T> {
 	public void agregarElemento(K llave, T dato) {
 
 		if (primerElemento == null) {
-			Node<K, T> nodo = new Node<K, T>(llave, dato, null);
+			NodeTabla<K, T> nodo = new NodeTabla<K, T>(llave, dato, null);
 			// agrega el nodo como ultimo y primer elemento
 			primerElemento = nodo;
 			ultimoElemento = nodo;
 		} else {
 			// pone el elemento al final de la fila
-			ultimoElemento = new Node<K, T>(llave, dato, ultimoElemento);
+			ultimoElemento = new NodeTabla<K, T>(llave, dato, ultimoElemento);
 		}
 
 		// incrementa el tamano
@@ -40,7 +40,7 @@ public class ListaEncadenada<K, T> implements IListaEncadenada<K, T> {
 	// retorna el elemento dado por parametro
 	public boolean existeElemento(T dato) {
 		// crea nodo igual al primer elemento
-		Node<K, T> nodo = primerElemento;
+		NodeTabla<K, T> nodo = primerElemento;
 
 		// itera los elementos hasta que se acaben o encuentre el elemento
 		while (nodo != null && !nodo.getElemento().equals(dato)) {
@@ -53,7 +53,7 @@ public class ListaEncadenada<K, T> implements IListaEncadenada<K, T> {
 
 	public void eliminarElemento(T dato) {
 		// crea nodo igual al primer elemento
-		Node<K, T> nodo = primerElemento;
+		NodeTabla<K, T> nodo = primerElemento;
 
 		// itera los elementos hasta que se acaben o encuentre el elemento
 		while (nodo != null && !nodo.getElemento().equals(dato)) {
@@ -82,7 +82,7 @@ public class ListaEncadenada<K, T> implements IListaEncadenada<K, T> {
 	public T darElemento(int index) {
 		T elemento = null;
 		if (index < tamano) {
-			Node<K, T> n = primerElemento;
+			NodeTabla<K, T> n = primerElemento;
 			for (int i = 0; i < index + 1;) {
 				n = n.getSiguiente();
 			}
@@ -96,11 +96,11 @@ public class ListaEncadenada<K, T> implements IListaEncadenada<K, T> {
 		return tamano == 0;
 	}
 
-	public Node<K, T> darPrimeraPosicion() {
+	public NodeTabla<K, T> darPrimeraPosicion() {
 		return primerElemento;
 	}
 
-	public Node<K, T> darUltimaPosicion() {
+	public NodeTabla<K, T> darUltimaPosicion() {
 		return ultimoElemento;
 	}
 

@@ -1,7 +1,10 @@
 package model.logic;
 
-public class Caracteristica {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+public class Caracteristica {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -32,74 +35,74 @@ public class Caracteristica {
 
 	// todos los parametros de una multa
 	int OBJECTID;
-	String FECHA_HORA;
+	Date FECHA_HORA;
 	String MEDIO_DETECCION;
 	String CLASE_VEHICULO;
-	String TIPO_SERVI;
+	String TIPO_SERVICIO;
 	String INFRACCION;
 	String DES_INFRACCION;
 	String LOCALIDAD;
 
 	// inicializa la multa
 	public Caracteristica(int id, String fecha, String medio, String clase, String servicio, String infraccion,
-			String desInfraccion, String localidad) {
+			String desInfraccion, String localidad) throws ParseException {
+		SimpleDateFormat conv = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		OBJECTID = id;
-		FECHA_HORA = fecha;
+		FECHA_HORA = conv.parse(fecha);
 		MEDIO_DETECCION = medio;
 		CLASE_VEHICULO = clase;
-		TIPO_SERVI = servicio;
+		TIPO_SERVICIO = servicio;
 		INFRACCION = infraccion;
 		DES_INFRACCION = desInfraccion;
 		LOCALIDAD = localidad;
 	}
 
-	public int getId()
-	{
+	public int getId() {
 		return OBJECTID;
 	}
 
-	public String getFecha()
-	{
+	public Date getFecha() {
 		return FECHA_HORA;
 	}
 
-	public String getMedio()
-	{
+	public String getMedio() {
 		return MEDIO_DETECCION;
 	}
 
-	public String getClaseVehiculo()
-	{
+	public String getClaseVehiculo() {
 		return CLASE_VEHICULO;
 	}
 
-	public String getServicio()
-	{
-		return TIPO_SERVI;
+	public String getServicio() {
+		return TIPO_SERVICIO;
 	}
 
-	public String getInfraccion()
-	{
+	public String getInfraccion() {
 		return INFRACCION;
 	}
 
-	public String getDesInfraccioin()
-	{
+	public String getDesInfraccioin() {
 		return DES_INFRACCION;
 	}
 
-	public String getLocalidad()
-	{
+	public String getLocalidad() {
 		return LOCALIDAD;
 	}
 
 	public String toString() {
-		return "Caracteristica [OBJECTID=" + OBJECTID + 
-		", FECHA_HORA=" + FECHA_HORA + 
-		", TIPO_SERVI=" + TIPO_SERVI + 
-		", CLASE_VEHI" + CLASE_VEHICULO +
-		", INFRACCION=" + INFRACCION + 
-		", LOCALIDAD=" + LOCALIDAD + "]";
+		return "Caracteristica [OBJECTID=" + OBJECTID + ", FECHA_HORA=" + FECHA_HORA + ", TIPO_SERVI=" + TIPO_SERVICIO
+				+ ", CLASE_VEHI" + CLASE_VEHICULO + ", INFRACCION=" + INFRACCION + ", LOCALIDAD=" + LOCALIDAD + "]";
+	}
+
+	public int compareTo(Caracteristica multa2) {
+		if (this.OBJECTID > multa2.OBJECTID) {
+			return 1;
+		} else if (this.OBJECTID < multa2.OBJECTID) {
+			return -1;
+		} else if (this.OBJECTID == multa2.OBJECTID) {
+			return 0;
+		}
+		return 0;
 	}
 
 }

@@ -13,6 +13,9 @@ public class TablaOrdenada<K, T> implements ITablaOrdenada<K, T> {
 
 	public TablaOrdenada() {
 		buckets = new ListaEncadenada[cantBuckets];
+		for (ListaEncadenada listaEncadenada : buckets) {
+			listaEncadenada = new ListaEncadenada<K, T>();
+		}
 		size = 0;
 	}
 
@@ -34,7 +37,7 @@ public class TablaOrdenada<K, T> implements ITablaOrdenada<K, T> {
 	@Override
 	public void agregarDato(K llave, T dato) {
 		int indiceBucket = darIndiceBucket(llave);
-		Node<K, T> actual = buckets[indiceBucket].darPrimeraPosicion();
+		NodeTabla<K, T> actual = buckets[indiceBucket].darPrimeraPosicion();
 		while (actual != null) {
 			if (actual.getLlave().equals(llave)) {
 				actual.setElemento(dato);
@@ -52,6 +55,9 @@ public class TablaOrdenada<K, T> implements ITablaOrdenada<K, T> {
 			cantBuckets = cantBuckets * 2;
 			buckets = new ListaEncadenada[cantBuckets];
 			size = 0;
+			for (ListaEncadenada listaEncadenada : buckets) {
+				listaEncadenada = new ListaEncadenada<K, T>();
+			}
 			for (ListaEncadenada listaEncadenada : temp) {
 				actual = listaEncadenada.darPrimeraPosicion();
 				while (listaEncadenada != null) {
@@ -66,7 +72,7 @@ public class TablaOrdenada<K, T> implements ITablaOrdenada<K, T> {
 
 	public T obtenerDato(K llave) {
 		int indiceBucket = darIndiceBucket(llave);
-		Node<K, T> actual = buckets[indiceBucket].darPrimeraPosicion();
+		NodeTabla<K, T> actual = buckets[indiceBucket].darPrimeraPosicion();
 		while (actual != null) {
 			if (actual.getLlave().equals(llave)) {
 				return actual.getElemento();
@@ -79,8 +85,8 @@ public class TablaOrdenada<K, T> implements ITablaOrdenada<K, T> {
 
 	public T eliminarDato(K llave) {
 		int indiceBucket = darIndiceBucket(llave);
-		Node<K, T> actual = buckets[indiceBucket].darPrimeraPosicion();
-		Node<K, T> anterior = null;
+		NodeTabla<K, T> actual = buckets[indiceBucket].darPrimeraPosicion();
+		NodeTabla<K, T> anterior = null;
 		T dato = null;
 		while (actual != null) {
 			if (actual.getLlave().equals(llave)) {
@@ -107,5 +113,4 @@ public class TablaOrdenada<K, T> implements ITablaOrdenada<K, T> {
 		return null;
 	}
 
-	
 }
