@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.google.gson.Gson;
 
 import model.data_structures.ArbolRojoNegro;
 import model.data_structures.HeapMax;
+import sun.util.resources.CalendarData;
 
 /**
  * Definicion del modelo del mundo
@@ -109,18 +111,18 @@ public class Modelo {
 	public String comparendosMayorGravedad(int m) {
 		String resp = "\n";
 		HeapMax<Multa> aux = new HeapMax<Multa>();
-		HeapMax<Multa> nueva = new HeapMax<Multa>();
-		HeapMax<Multa> vieja = new HeapMax<Multa>();
+		HeapMax<Multa> respaldo = new HeapMax<Multa>();
+		HeapMax<Multa> original = new HeapMax<Multa>();
 		int size = heap.getSize();
 		for (int i = 0; i < size; i++) {
 			Multa max = heap.getMax();
-			nueva.agregar(max);
-			vieja.agregar(max);
+			respaldo.agregar(max);
+			original.agregar(max);
 		}
-		heap = vieja;
-		int sizeNueva = nueva.getSize();
+		heap = original;
+		int sizeNueva = respaldo.getSize();
 		while (sizeNueva > 0) {
-			Multa actual = nueva.removeMax();
+			Multa actual = respaldo.removeMax();
 			if (actual != null) {
 				actual.cambiarComparacion(2);
 			}
@@ -141,5 +143,33 @@ public class Modelo {
 		}
 		return resp;
 
+	}
+	// Requerimiento 2A
+
+	public String comparendosPorFecha(int pMes, int pDia) {
+		HeapMax<Multa> aux = new HeapMax<Multa>();
+		HeapMax<Multa> nueva = new HeapMax<Multa>();
+		HeapMax<Multa> vieja = new HeapMax<Multa>();
+		int size = heap.getSize();
+		for (int i = 0; i < size; i++) {
+			Multa max = heap.getMax();
+			nueva.agregar(max);
+			vieja.agregar(max);
+		}
+		heap = vieja;
+		
+		int tamaño=nueva.getSize();
+		
+		Calendar cal=Calendar.getInstance();
+		cal.setTime(date);
+		while(tamaño>0){
+			Multa actual=nueva.removeMax();
+			Calendar cal=Calendar.getInstance();
+			cal.
+			if () {
+				
+			}
+		}
+		return null;
 	}
 }
